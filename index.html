@@ -4,240 +4,365 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FABLE (FABL) — A Tale of Three Thousand Shares · BSC</title>
-<meta name="description" content="FABLE is a fixed-supply share sale on BNB Smart Chain, told as a storybook. 3,000 shares of 1,000,000 FABL: 300 free (1 per wallet), 2,700 at 0.002 BNB. 100% of proceeds go to the treasury. Unsold supply is burned at the end.">
+<meta name="description" content="FABLE is a fixed-supply share sale on BNB Smart Chain, told as a living storybook. 3,000 shares of 1,000,000 FABL: 300 free (1 per wallet), 2,700 at 0.002 BNB. A seven-day telling — when the book closes, every unsold FABL is burned.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='14' y='8' width='72' height='84' rx='6' fill='%237a1f1f'/><rect x='24' y='18' width='52' height='64' rx='3' fill='none' stroke='%23e9c46a' stroke-width='4'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --page:#faf3e1; --page2:#f3e7c8; --ink:#2b2118; --mut:#8a7358;
+    --page:#faf3e1; --page2:#f1e5c6; --ink:#2b2118; --mut:#8a7358;
     --red:#7a1f1f; --red2:#9c2b2b; --gold:#c99700; --gold2:#e9c46a; --green:#3f6212;
+    --night1:#0b1710; --night2:#1a2f20;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{background:var(--page2);color:var(--ink);font-family:Georgia,"Times New Roman",serif;
-    background-image:radial-gradient(#7a1f1f10 1px,transparent 1.4px);background-size:22px 22px}
+  body{
+    color:var(--ink);font-family:Georgia,"Times New Roman",serif;
+    background:
+      radial-gradient(1.5px 1.5px at 12% 8%, #ffeeb8cc, transparent 60%),
+      radial-gradient(1px 1px at 78% 5%, #ffeeb899, transparent 60%),
+      radial-gradient(1.2px 1.2px at 55% 14%, #ffeeb8aa, transparent 60%),
+      radial-gradient(1px 1px at 33% 3%, #ffeeb877, transparent 60%),
+      radial-gradient(1.4px 1.4px at 90% 18%, #ffeeb899, transparent 60%),
+      linear-gradient(var(--night1), var(--night2) 55%, #0d1a11);
+    background-attachment:fixed;
+    min-height:100vh;overflow-x:hidden;
+  }
   .mono{font-family:"IBM Plex Mono",monospace}
-  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
-  .sheet{background:var(--page);border-left:2px solid #7a1f1f2b;border-right:2px solid #7a1f1f2b;
-    box-shadow:0 0 44px #2b211822;min-height:100vh}
-  header{border-bottom:1px solid var(--ink)}
-  .topbar{display:flex;justify-content:space-between;align-items:center;padding:15px 0;gap:12px;flex-wrap:wrap}
-  .brand{font-family:"Playfair Display",serif;font-weight:900;letter-spacing:.28em;font-size:17px}
-  .brand i{color:var(--red);font-style:normal}
-  nav{display:flex;gap:20px;font-family:"IBM Plex Mono",monospace;font-size:12.5px}
-  nav a{color:var(--ink);text-decoration:none}
-  nav a:hover{color:var(--red);text-decoration:underline}
-  .edition{font-family:"IBM Plex Mono",monospace;font-size:11.5px;border:1.5px solid var(--ink);padding:5px 9px}
-  /* cover */
-  .cover{text-align:center;padding:46px 16px 8px}
-  .cover .frame{border:3px double var(--red);outline:1.5px solid var(--gold);outline-offset:6px;
-    padding:38px 22px 30px;background:linear-gradient(#fffaf0,#faf3e1)}
-  .cover .over{font-family:"IBM Plex Mono",monospace;letter-spacing:.34em;font-size:12px;color:var(--mut)}
-  .cover h1{font-family:"Playfair Display",serif;font-weight:900;font-size:clamp(60px,12vw,116px);line-height:1.02;color:var(--red);margin:12px 0 4px}
-  .cover .subtitle{font-family:"Playfair Display",serif;font-style:italic;font-weight:600;font-size:clamp(19px,3vw,25px)}
-  .cover .rule{display:flex;align-items:center;gap:12px;max-width:420px;margin:20px auto}
-  .cover .rule::before,.cover .rule::after{content:"";flex:1;border-top:1.5px solid var(--gold)}
-  .cover .rule span{color:var(--red);font-size:19px}
-  .cover .lede{max-width:560px;margin:0 auto;font-size:17.5px;line-height:1.65}
-  .cover .lede b{color:var(--red)}
-  .cover .lede::first-letter{font-family:"Playfair Display",serif;font-size:52px;font-weight:900;color:var(--red);
-    float:left;line-height:.82;padding:5px 10px 0 0}
-  .cdrow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-  .cd{border:1.5px solid var(--ink);background:#fffaf0;padding:8px 14px;font-family:"IBM Plex Mono",monospace;text-align:left}
-  .cd .k{font-size:10.5px;letter-spacing:.15em;color:var(--mut)}
-  .cd .v{font-size:19px;font-weight:600}
-  /* bookmark progress */
-  .progress{padding:30px 0 4px}
-  .progress-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
-  .progress-head h2{font-family:"Playfair Display",serif;font-size:27px;font-weight:900}
-  .ribbon-track{position:relative;height:26px;border:2px solid var(--ink);background:#fffaf0;margin-top:13px}
-  .ribbon-track i{position:absolute;top:0;bottom:0;left:0;width:0%;background:var(--red);transition:width 1s ease}
-  .ribbon-track i::after{content:"";position:absolute;right:-13px;top:0;border-style:solid;border-width:13px 13px 13px 0;border-color:transparent var(--red) transparent transparent;transform:rotate(180deg)}
-  .scale{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--mut);margin-top:6px}
-  /* chapters */
-  .chapters{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px 0 4px}
-  @media(max-width:720px){.chapters{grid-template-columns:1fr}}
-  .chapter{border:2px solid var(--ink);background:#fffaf0;padding:22px}
-  .chapter .chno{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.22em;color:var(--red)}
-  .chapter h3{font-family:"Playfair Display",serif;font-size:25px;font-weight:900;margin:6px 0 4px}
-  .chapter p{color:var(--mut);line-height:1.6;font-size:15.5px}
-  .meter{height:13px;border:2px solid var(--ink);background:#fff;margin:15px 0 7px;overflow:hidden}
+  /* ---- moving night: fireflies ---- */
+  .fireflies{position:fixed;inset:0;z-index:1;pointer-events:none}
+  .fireflies i{position:absolute;left:var(--x);top:var(--y);width:5px;height:5px;border-radius:50%;
+    background:#ffd968;box-shadow:0 0 10px 3px #ffd96888;opacity:0;
+    animation:fly var(--t) ease-in-out var(--dl) infinite}
+  @keyframes fly{
+    0%{transform:translate(0,0);opacity:0}
+    12%{opacity:.95}
+    30%{transform:translate(26px,-34px)}
+    50%{opacity:.35}
+    62%{transform:translate(-18px,-58px);opacity:.9}
+    82%{transform:translate(12px,-20px);opacity:.5}
+    100%{transform:translate(0,0);opacity:0}
+  }
+  /* ---- silhouette layers (parallax on scroll + slow sway) ---- */
+  .sil{position:fixed;left:0;right:0;bottom:0;z-index:0;pointer-events:none;will-change:transform}
+  .sil svg{display:block;width:100%}
+  .sil .sway{display:block;animation:sway 30s ease-in-out infinite alternate}
+  .sil-mid .sway{animation-duration:38s}
+  .sil-near .sway{animation-duration:46s}
+  @keyframes sway{from{transform:translateX(-9px)}to{transform:translateX(9px)}}
+  /* ---- book layout: rail + pages ---- */
+  .book{position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:34px 18px 190px;
+    display:grid;grid-template-columns:86px 1fr;gap:26px}
+  .rail{position:sticky;top:26px;align-self:start;display:flex;flex-direction:column;gap:7px;
+    border-left:2px solid #e9c46a55;padding-left:13px}
+  .rail a{display:block;text-decoration:none;color:#e9d9a8;padding:5px 0}
+  .rail a .rn{font-family:"Playfair Display",serif;font-weight:900;font-size:19px;color:var(--gold2);display:block;line-height:1}
+  .rail a .rl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.16em;color:#cbbd8d}
+  .rail a:hover .rn{color:#fff2c4}
+  .pages{min-width:0}
+  /* ---- an open-book spread ---- */
+  .spread{position:relative;display:grid;grid-template-columns:1fr 1fr;margin-bottom:38px;
+    background:linear-gradient(90deg,var(--page2) 0%,var(--page) 7%,var(--page) 46%,#e7d6ab 50%,var(--page) 54%,var(--page) 93%,var(--page2) 100%);
+    border-radius:5px 12px 12px 5px;
+    box-shadow:0 24px 50px #00000090, inset 0 0 60px #7a1f1f14;
+    overflow:hidden}
+  .spread::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:34px;transform:translateX(-50%);
+    background:linear-gradient(90deg,transparent,#2b21181f 42%,#2b211833 50%,#2b21181f 58%,transparent);pointer-events:none}
+  .leaf{padding:38px 40px 42px;position:relative}
+  .leaf.l{border-right:1px solid #2b211814}
+  @media(max-width:860px){
+    .book{grid-template-columns:1fr;padding-bottom:170px}
+    .rail{position:static;flex-direction:row;flex-wrap:wrap;border-left:none;border-bottom:2px solid #e9c46a55;padding:0 0 10px}
+    .rail a{padding:4px 9px 4px 0}
+    .spread{grid-template-columns:1fr}
+    .spread::before{display:none}
+    .leaf{padding:28px 22px 30px}
+    .leaf.l{border-right:none;border-bottom:1px dashed #2b211830}
+  }
+  /* ---- prologue / title leaf ---- */
+  .over{font-family:"IBM Plex Mono",monospace;letter-spacing:.3em;font-size:11px;color:var(--mut)}
+  .ttl{font-family:"Playfair Display",serif;font-weight:900;font-size:clamp(58px,8vw,96px);line-height:1;color:var(--red);margin:14px 0 6px}
+  .subtitle{font-family:"Playfair Display",serif;font-style:italic;font-weight:600;font-size:clamp(19px,2.6vw,24px)}
+  .rule{display:flex;align-items:center;gap:12px;max-width:340px;margin:22px 0}
+  .rule::before,.rule::after{content:"";flex:1;border-top:1.5px solid var(--gold)}
+  .rule span{color:var(--red);font-size:19px}
+  .framebox{border:3px double var(--red);outline:1.5px solid var(--gold);outline-offset:5px;padding:18px 16px;background:#fffaf066}
+  .framebox p{font-size:14.5px;line-height:1.6;color:var(--mut)}
+  .dropcap::first-letter{font-family:"Playfair Display",serif;font-size:56px;font-weight:900;color:var(--red);
+    float:left;line-height:.82;padding:6px 11px 0 0}
+  .lede{font-size:17.5px;line-height:1.68}
+  .lede b{color:var(--red)}
+  .slips{margin-top:24px;display:flex;flex-direction:column;gap:11px}
+  .slip{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    border:1.5px solid var(--ink);background:#fffaf0;padding:10px 14px;transform:rotate(-.4deg)}
+  .slip:nth-child(2){transform:rotate(.5deg)}
+  .slip .k{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;color:var(--mut)}
+  .slip .v{font-family:"IBM Plex Mono",monospace;font-size:17.5px;font-weight:600;white-space:nowrap}
+  /* ---- spine bookmark band ---- */
+  .spineband{position:relative;margin:0 0 38px;background:linear-gradient(var(--red2),var(--red));
+    border-top:2px dashed #e9c46a99;border-bottom:2px dashed #e9c46a99;
+    box-shadow:0 16px 34px #00000080;padding:20px 26px 22px;color:#f7e8c8;border-radius:3px}
+  .spineband .bh{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+  .spineband h2{font-family:"Playfair Display",serif;font-size:23px;font-weight:900}
+  .spineband .mono{font-size:13px}
+  .ribbon-track{position:relative;height:22px;background:#2b1410;border:1.5px solid #e9c46a;margin-top:13px;overflow:hidden}
+  .ribbon-track i{position:absolute;top:0;bottom:0;left:0;width:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1s ease}
+  .scale{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:#e9c46a;margin-top:7px;letter-spacing:.1em}
+  /* ---- chapters ---- */
+  .chno{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.22em;color:var(--red)}
+  .leaf h3{font-family:"Playfair Display",serif;font-size:31px;font-weight:900;margin:8px 0 12px}
+  .leaf p.txt{font-size:16px;line-height:1.68;color:#4a3a28}
+  .leaf p.txt b{color:var(--red)}
+  .panel{border:2px solid var(--ink);background:#fffaf0;padding:20px;box-shadow:5px 5px 0 #2b211822}
+  .panel .plabel{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;color:var(--mut);margin-bottom:10px}
+  .meter{height:13px;border:2px solid var(--ink);background:#fff;margin:6px 0 8px;overflow:hidden}
   .meter i{display:block;height:100%;width:0%;transition:width 1s ease}
   .meter .f{background:var(--green)} .meter .p{background:var(--gold)}
   .meter-row{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:12.5px}
-  .qtyrow{display:flex;align-items:center;gap:12px;margin:13px 0 2px}
+  .qtyrow{display:flex;align-items:center;gap:12px;margin:14px 0 2px}
   .qtyrow input{width:88px;font-family:"IBM Plex Mono",monospace;font-size:16px;padding:8px;border:2px solid var(--ink);background:#fff}
   .qtyrow .tot{font-family:"IBM Plex Mono",monospace;font-weight:600}
-  .btn{display:inline-block;width:100%;margin-top:13px;padding:14px;font-family:"Playfair Display",serif;font-weight:900;font-size:18px;
-    border:2.5px solid var(--ink);cursor:pointer;background:var(--red);color:#fffaf0;transition:transform .08s}
+  .btn{display:inline-block;width:100%;margin-top:14px;padding:14px;font-family:"Playfair Display",serif;font-weight:900;font-size:18px;
+    border:2.5px solid var(--ink);cursor:pointer;background:var(--red);color:#fffaf0;transition:transform .08s;text-align:center;text-decoration:none}
   .btn:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
   .btn:disabled{opacity:.45;cursor:not-allowed}
   .btn.freeb{background:var(--green)} .btn.paidb{background:var(--gold);color:var(--ink)}
-  .status{font-family:"IBM Plex Mono",monospace;font-size:13px;padding:4px 0 22px;color:var(--mut)}
-  /* share */
-  .share{border:2.5px dashed var(--red);background:#fdf6da;padding:20px;margin:4px 0 26px}
+  .marginnote{font-family:"IBM Plex Mono",monospace;font-size:13px;color:#e9d9a8;
+    border-left:3px solid var(--gold);padding:4px 0 4px 14px;margin:-14px 0 34px 6px}
+  /* ---- marked page (share) ---- */
+  .share{border:2.5px dashed var(--red);background:#fdf6da;padding:22px;margin:0 0 38px;transform:rotate(-.7deg);
+    box-shadow:0 18px 36px #00000070}
   .share .tag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;background:var(--gold2);border:2px solid var(--ink);padding:4px 9px;margin-bottom:11px}
-  .sharetext{white-space:pre-wrap;font-size:16px;line-height:1.6;border:1.5px solid var(--ink);background:#fffaf0;padding:13px}
+  .share p{font-size:15.5px;line-height:1.6}
+  .sharetext{white-space:pre-wrap;font-size:16px;line-height:1.6;border:1.5px solid var(--ink);background:#fffaf0;padding:13px;margin-top:11px}
   .share .row{display:flex;gap:12px;margin-top:13px;flex-wrap:wrap}
   .share .row .btn{width:auto;padding:11px 20px;margin-top:0}
   .btn.ghost{background:#fffaf0;color:var(--ink)}
-  /* contents + colophon */
-  section.block{padding:20px 0 6px}
-  section.block h2{font-family:"Playfair Display",serif;font-size:27px;font-weight:900;margin-bottom:14px}
+  /* ---- contents / colophon / letter / fireside ---- */
+  .leaf h2{font-family:"Playfair Display",serif;font-size:27px;font-weight:900;margin-bottom:14px}
   .toc{list-style:none}
-  .toc li{display:flex;gap:14px;border:2px solid var(--ink);background:#fffaf0;padding:15px 17px;margin-bottom:11px}
+  .toc li{display:flex;gap:14px;border-bottom:1px dotted #8a7358;padding:13px 2px}
+  .toc li:last-child{border-bottom:none}
   .toc .n{font-family:"Playfair Display",serif;font-weight:900;font-size:22px;color:var(--red);min-width:38px}
   .toc h4{font-family:"Playfair Display",serif;font-size:18.5px;font-weight:900}
   .toc p{color:var(--mut);line-height:1.55;font-size:15px}
-  table{width:100%;border-collapse:collapse;background:#fffaf0;border:2px solid var(--ink)}
-  th,td{border-bottom:1px solid #2b21182b;padding:10px 13px;text-align:left;font-size:15px}
-  th{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;color:var(--mut);width:32%}
+  table{width:100%;border-collapse:collapse}
+  th,td{border-bottom:1px solid #2b21182b;padding:10px 6px;text-align:left;font-size:15px;vertical-align:top}
+  th{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;color:var(--mut);width:34%}
   tr:last-child th,tr:last-child td{border-bottom:none}
   td{font-weight:600}
   .addr{word-break:break-all}
-  /* letter */
-  .letter{border:2px solid var(--ink);background:#fffaf0;padding:20px}
-  .letter pre{white-space:pre-wrap;font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.65}
+  .letter{border:2px solid var(--ink);background:#fffaf0;padding:18px}
+  .letter pre{white-space:pre-wrap;font-family:"IBM Plex Mono",monospace;font-size:12.8px;line-height:1.65}
   .letter .btn{width:auto;padding:11px 20px}
-  /* fireside */
-  .qa{border:2px solid var(--ink);background:#fffaf0;padding:15px 17px;margin-bottom:11px}
+  .qa{border-bottom:1px dotted #8a7358;padding:13px 2px}
+  .qa:last-child{border-bottom:none}
   .qa h4{font-family:"Playfair Display",serif;font-size:18px;font-weight:900;margin-bottom:3px}
   .qa p{color:var(--mut);line-height:1.6;font-size:15px}
-  footer{border-top:1px solid var(--ink);padding:20px 0 30px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--mut);text-align:center}
-  footer a{color:var(--red)}
-  .fin{font-family:"Playfair Display",serif;font-style:italic;font-size:19px;color:var(--red);margin-bottom:8px}
+  footer{color:#cbbd8d;font-family:"IBM Plex Mono",monospace;font-size:12.5px;text-align:center;padding:6px 0 10px}
+  footer a{color:var(--gold2)}
+  .fin{font-family:"Playfair Display",serif;font-style:italic;font-size:21px;color:var(--gold2);margin-bottom:8px}
 </style>
 </head>
 <body>
-<div class="sheet">
-<header>
-  <div class="wrap topbar">
-    <div class="brand">F<i>A</i>BLE</div>
-    <nav>
-      <a href="#chapters">Chapters</a><a href="#contents">Contents</a><a href="#colophon">Colophon</a><a href="#agents">For Agents</a>
-    </nav>
-    <span class="edition">FIRST EDITION · BSC</span>
-  </div>
-</header>
 
-<section class="cover">
-  <div class="wrap">
-    <div class="frame">
-      <p class="over">A FIXED-SUPPLY SHARE SALE · BNB SMART CHAIN</p>
-      <h1>FABLE</h1>
-      <p class="subtitle">A tale of three thousand shares</p>
-      <div class="rule"><span>❦</span></div>
-      <p class="lede">Once upon a chain, there was a token with exactly three billion coins and not one more. Its story is sold by the share — 3,000 shares of 1,000,000 FABL — and like every good story, it gives something away in chapter one: <b>300 shares are free</b>, one per reader. Every coin paid along the way travels straight to the treasury, in the very same transaction.</p>
-      <div class="cdrow">
-        <div class="cd"><div class="k">THE STORY OPENS IN</div><div class="v" id="cdStart">--:--:--</div></div>
-        <div class="cd"><div class="k">THE BOOK CLOSES</div><div class="v">24 NOV · 00:30 WIB</div></div>
-        <div class="cd"><div class="k">PROCEEDS TO TREASURY</div><div class="v">100%</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="progress wrap">
-  <div class="progress-head">
-    <h2>Pages turned</h2>
-    <p class="mono"><span id="totalTakenLbl">0</span> shares taken · <span id="totalLeftLbl">3,000 left</span></p>
-  </div>
-  <div class="ribbon-track"><i id="totalBar"></i></div>
-  <div class="scale"><span>PAGE ONE</span><span>THE BOOKMARK MOVES AS SHARES SELL</span><span>THE END</span></div>
-</section>
-
-<section class="chapters wrap" id="chapters">
-  <div class="chapter">
-    <p class="chno">CHAPTER ONE — THE GIFT</p>
-    <h3>The free share</h3>
-    <p>The opening gift: one share for every reader's wallet, free. Three hundred gifts in all — when they are given, the chapter closes.</p>
-    <div class="meter"><i class="f" id="freeMeter"></i></div>
-    <div class="meter-row"><span><span id="freeSold">0</span> / 300 claimed</span><span><span id="freeLeft">300</span> left</span></div>
-    <button class="btn freeb" id="claimBtn" type="button" disabled>Claim opens at launch</button>
-  </div>
-  <div class="chapter">
-    <p class="chno">CHAPTER TWO — THE PRICE</p>
-    <h3>Buy shares</h3>
-    <p>The rest of the tale is sold at a fair and fixed price: 2,700 shares at 0.002 BNB each, as many as you wish to own. The full amount reaches the treasury in the same transaction.</p>
-    <div class="meter"><i class="p" id="paidMeter"></i></div>
-    <div class="meter-row"><span><span id="paidSold">0</span> / 2,700 sold</span><span><span id="paidLeft">2,700</span> left</span></div>
-    <div class="qtyrow">
-      <input id="buyQty" type="number" min="1" step="1" value="1" aria-label="Number of shares">
-      <span class="tot" id="buyTotal">= 0.002 BNB</span>
-    </div>
-    <button class="btn paidb" id="buyBtn" type="button" disabled>Sale opens at launch</button>
-  </div>
-</section>
-<div class="wrap"><p class="status" id="walletStatus">Wallet not connected yet — claiming and buying connect it for you.</p></div>
-
-<div class="wrap">
-  <section class="share" id="shareBox" hidden>
-    <span class="tag">YOUR PAGE IS MARKED 🎉</span>
-    <p style="margin-bottom:11px">Your share is written into the chain. If you would like to tell the tale further, here is a ready-made post — nothing goes out without your tap.</p>
-    <div class="sharetext" id="shareText"></div>
-    <div class="row">
-      <a class="btn" id="shareBtn" href="#" target="_blank" rel="noopener" style="background:#1d6fb8">Post it on X →</a>
-      <button class="btn ghost" id="shareClose" type="button">No thanks</button>
-    </div>
-  </section>
+<div class="fireflies" aria-hidden="true">
+  <i style="--x:6%;--y:64%;--t:9s;--dl:0s"></i><i style="--x:14%;--y:38%;--t:12s;--dl:-3s"></i>
+  <i style="--x:22%;--y:78%;--t:10s;--dl:-6s"></i><i style="--x:31%;--y:20%;--t:13s;--dl:-2s"></i>
+  <i style="--x:44%;--y:70%;--t:9.5s;--dl:-5s"></i><i style="--x:52%;--y:30%;--t:11s;--dl:-8s"></i>
+  <i style="--x:63%;--y:82%;--t:12.5s;--dl:-1s"></i><i style="--x:71%;--y:16%;--t:10.5s;--dl:-4s"></i>
+  <i style="--x:79%;--y:58%;--t:9s;--dl:-7s"></i><i style="--x:86%;--y:34%;--t:13.5s;--dl:-2.5s"></i>
+  <i style="--x:93%;--y:74%;--t:11.5s;--dl:-9s"></i><i style="--x:38%;--y:88%;--t:10s;--dl:-3.5s"></i>
+  <i style="--x:57%;--y:52%;--t:12s;--dl:-6.5s"></i><i style="--x:9%;--y:12%;--t:14s;--dl:-1.5s"></i>
 </div>
 
-<section class="block wrap" id="contents">
-  <h2>Contents</h2>
-  <ul class="toc">
-    <li><span class="n">I.</span><div><h4>Open the book</h4><p>Connect any BNB Smart Chain wallet. Claiming or buying connects it for you — no sign-up, no account, no library card.</p></div></li>
-    <li><span class="n">II.</span><div><h4>Accept the gift</h4><p>Take your one free share while the 300 last. Then buy more at 0.002 BNB a share if the story has you hooked.</p></div></li>
-    <li><span class="n">III.</span><div><h4>Read the ending</h4><p>When the book closes on 24 Nov, a public finalize() call burns every unsold FABL. What was taken is all that will ever exist.</p></div></li>
-  </ul>
-</section>
+<div class="sil sil-far" aria-hidden="true"><span class="sway">
+  <svg viewBox="0 0 1440 210" preserveAspectRatio="none" style="height:190px">
+    <path d="M0 210 L0 150 Q 180 96 360 132 Q 540 168 700 128 L 716 128 L 716 84 L 726 84 L 726 70 L 734 84 L 742 84 L 742 128 Q 900 92 1080 126 Q 1260 158 1440 118 L 1440 210 Z" fill="#26402c" opacity=".85"/>
+  </svg></span>
+</div>
+<div class="sil sil-mid" aria-hidden="true"><span class="sway">
+  <svg viewBox="0 0 1440 230" preserveAspectRatio="none" style="height:215px">
+    <path d="M0 230 L0 176 L26 128 L52 176 L74 140 L104 184 L128 118 L156 184 L186 148 L214 190 L244 132 L272 190 L300 156 L330 196 L356 124 L386 196 L414 150 L444 198 L474 138 L502 198 L528 160 L560 202 L590 130 L618 202 L648 154 L678 204 L706 144 L736 204 L764 162 L794 206 L824 136 L852 206 L880 158 L910 208 L940 148 L968 208 L996 164 L1026 210 L1056 142 L1084 210 L1112 156 L1142 210 L1172 150 L1200 212 L1230 166 L1260 212 L1288 140 L1318 212 L1346 160 L1376 214 L1406 168 L1440 200 L1440 230 Z" fill="#152820"/>
+  </svg></span>
+</div>
+<div class="sil sil-near" aria-hidden="true"><span class="sway">
+  <svg viewBox="0 0 1440 260" preserveAspectRatio="none" style="height:245px">
+    <path d="M0 260 L0 208 L34 150 L66 208 L92 168 L124 214 L150 138 L184 214 L214 176 L246 220 L1040 220 L1040 150 L1054 150 L1054 128 L1066 128 L1066 108 L1078 128 L1090 128 L1090 150 L1150 150 L1150 96 L1164 96 L1164 74 L1178 74 L1178 54 L1192 74 L1206 74 L1206 96 L1266 96 L1266 150 L1278 150 L1278 128 L1290 128 L1290 108 L1302 128 L1314 128 L1314 150 L1328 150 L1328 220 L1360 214 L1390 172 L1414 214 L1440 196 L1440 260 Z" fill="#081209"/>
+    <rect x="1183" y="118" width="10" height="14" fill="#ffd968" opacity=".9"/>
+    <rect x="1058" y="168" width="7" height="10" fill="#ffd968" opacity=".7"/>
+    <rect x="1294" y="168" width="7" height="10" fill="#ffd968" opacity=".7"/>
+  </svg></span>
+</div>
 
-<section class="block wrap" id="colophon">
-  <h2>Colophon</h2>
-  <table>
-    <tr><th>TITLE</th><td>Fable (FABL) — one immutable contract, no owner, no admin keys</td></tr>
-    <tr><th>TOTAL SUPPLY</th><td>3,000,000,000 FABL</td></tr>
-    <tr><th>ONE SHARE</th><td>1,000,000 FABL</td></tr>
-    <tr><th>DISTRIBUTION</th><td>3,000 shares — 300 free (1 per wallet) + 2,700 at 0.002 BNB</td></tr>
-    <tr><th>PROCEEDS</th><td>100% forwarded to the treasury in the same transaction</td></tr>
-    <tr><th>WINDOW</th><td>17 Nov 2026, 00:30 WIB → 24 Nov 2026, 00:30 WIB</td></tr>
-    <tr><th>AT THE END</th><td>Anyone can call finalize() — every unsold FABL still in the contract is burned</td></tr>
-    <tr><th>CONTRACT</th><td class="addr">0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2 · verified on Sourcify (exact match)</td></tr>
-  </table>
-</section>
+<div class="book">
+  <aside class="rail" aria-label="Chapter markers">
+    <a href="#prologue"><span class="rn">❦</span><span class="rl">PROLOGUE</span></a>
+    <a href="#bab-satu"><span class="rn">I</span><span class="rl">THE GIFT</span></a>
+    <a href="#bab-dua"><span class="rn">II</span><span class="rl">THE PRICE</span></a>
+    <a href="#penanda"><span class="rn">✦</span><span class="rl">BOOKMARK</span></a>
+    <a href="#isi"><span class="rn">§</span><span class="rl">CONTENTS</span></a>
+    <a href="#kolofon"><span class="rn">¶</span><span class="rl">COLOPHON</span></a>
+    <a href="#agen"><span class="rn">✎</span><span class="rl">FOR AGENTS</span></a>
+    <a href="#perapian"><span class="rn">?</span><span class="rl">FIRESIDE</span></a>
+  </aside>
 
-<section class="block wrap" id="agents">
-  <h2>A note to the reader's companion (agents)</h2>
-  <div class="letter">
-    <pre id="agentPrompt">You are helping me join the FABLE (FABL) share sale on BNB Smart Chain (chainId 56).
+  <main class="pages">
+
+    <section class="spread" id="prologue">
+      <div class="leaf l">
+        <p class="over">A FIXED-SUPPLY SHARE SALE · BNB SMART CHAIN</p>
+        <h1 class="ttl">FABLE</h1>
+        <p class="subtitle">A tale of three thousand shares</p>
+        <div class="rule"><span>❦</span></div>
+        <div class="framebox">
+          <p>This book is bound to a single immutable contract on BNB Smart Chain. No owner holds its keys, no editor can alter a line — the story reads exactly as it was written, forever.</p>
+        </div>
+      </div>
+      <div class="leaf r">
+        <p class="lede dropcap">Once upon a chain, there was a token with exactly three billion coins and not one more. Its story is told by the share — <b>3,000 shares of 1,000,000 FABL</b> — and like every good story, it gives something away in chapter one: <b>300 shares are free</b>, one per reader. When the seventh day ends, whatever was never taken is burned, and the tale is closed for good.</p>
+        <div class="slips">
+          <div class="slip"><span class="k">THE STORY OPENS IN</span><span class="v" id="cdStart">--:--:--</span></div>
+          <div class="slip"><span class="k">THE BOOK CLOSES</span><span class="v">24 NOV · 00:30 WIB</span></div>
+          <div class="slip"><span class="k">THE TELLING</span><span class="v">7 DAYS ONLY</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="spineband" id="penanda">
+      <div class="bh">
+        <h2>The bookmark, sewn into the spine</h2>
+        <p class="mono"><span id="totalTakenLbl">0</span> shares taken · <span id="totalLeftLbl">3,000 left</span></p>
+      </div>
+      <div class="ribbon-track"><i id="totalBar"></i></div>
+      <div class="scale"><span>PAGE ONE</span><span>THE GOLD THREAD SHORTENS AS SHARES ARE TAKEN</span><span>THE END</span></div>
+    </div>
+
+    <section class="spread" id="bab-satu">
+      <div class="leaf l">
+        <p class="chno">CHAPTER ONE — THE GIFT</p>
+        <h3>The free share</h3>
+        <p class="txt dropcap">Every tale worth telling opens with a gift. Here it is: one share for every reader's wallet, free — three hundred gifts in all, written into the contract where no one can add a three-hundred-and-first. When they are given, the chapter closes, and no pleading with the author will reopen it.</p>
+      </div>
+      <div class="leaf r">
+        <div class="panel">
+          <p class="plabel">ACCEPT THE GIFT</p>
+          <div class="meter"><i class="f" id="freeMeter"></i></div>
+          <div class="meter-row"><span><span id="freeSold">0</span> / 300 claimed</span><span><span id="freeLeft">300</span> left</span></div>
+          <button class="btn freeb" id="claimBtn" type="button" disabled>Claim opens at launch</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="spread" id="bab-dua">
+      <div class="leaf l">
+        <p class="chno">CHAPTER TWO — THE PRICE</p>
+        <h3>Buy shares</h3>
+        <p class="txt dropcap">The rest of the tale is sold at a fair and fixed price: <b>2,700 shares at 0.002 BNB each</b>, as many as you wish to own. The price never moves, there is no queue and no auction — the page simply waits for its reader, until the book closes and the unsold pages are burned.</p>
+      </div>
+      <div class="leaf r">
+        <div class="panel">
+          <p class="plabel">OWN MORE OF THE TALE</p>
+          <div class="meter"><i class="p" id="paidMeter"></i></div>
+          <div class="meter-row"><span><span id="paidSold">0</span> / 2,700 sold</span><span><span id="paidLeft">2,700</span> left</span></div>
+          <div class="qtyrow">
+            <input id="buyQty" type="number" min="1" step="1" value="1" aria-label="Number of shares">
+            <span class="tot" id="buyTotal">= 0.002 BNB</span>
+          </div>
+          <button class="btn paidb" id="buyBtn" type="button" disabled>Sale opens at launch</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="marginnote" id="walletStatus">Wallet not connected yet — claiming and buying connect it for you.</p>
+
+    <section class="share" id="shareBox" hidden>
+      <span class="tag">YOUR PAGE IS MARKED 🎉</span>
+      <p>Your share is written into the chain. If you would like to tell the tale further, here is a ready-made post — nothing goes out without your tap.</p>
+      <div class="sharetext" id="shareText"></div>
+      <div class="row">
+        <a class="btn" id="shareBtn" href="#" target="_blank" rel="noopener" style="background:#1d6fb8">Post it on X →</a>
+        <button class="btn ghost" id="shareClose" type="button">No thanks</button>
+      </div>
+    </section>
+
+    <section class="spread" id="isi">
+      <div class="leaf l">
+        <h2>Contents</h2>
+        <ul class="toc">
+          <li><span class="n">I.</span><div><h4>Open the book</h4><p>Connect any BNB Smart Chain wallet. Claiming or buying connects it for you — no sign-up, no account, no library card.</p></div></li>
+          <li><span class="n">II.</span><div><h4>Accept the gift</h4><p>Take your one free share while the 300 last. Then buy more at 0.002 BNB a share if the story has you hooked.</p></div></li>
+        </ul>
+      </div>
+      <div class="leaf r">
+        <ul class="toc" style="margin-top:52px">
+          <li><span class="n">III.</span><div><h4>Read the ending</h4><p>When the book closes on 24 Nov, a public finalize() call burns every unsold FABL. What was taken is all that will ever exist.</p></div></li>
+          <li><span class="n">IV.</span><div><h4>Tell it further</h4><p>After your claim or purchase, the book offers you a ready-made post for X — it is only ever sent with your own tap.</p></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="spread" id="kolofon">
+      <div class="leaf l">
+        <h2>Colophon</h2>
+        <table>
+          <tr><th>TITLE</th><td>Fable (FABL) — one immutable contract, no owner, no admin keys</td></tr>
+          <tr><th>TOTAL SUPPLY</th><td>3,000,000,000 FABL</td></tr>
+          <tr><th>ONE SHARE</th><td>1,000,000 FABL</td></tr>
+          <tr><th>DISTRIBUTION</th><td>3,000 shares — 300 free (1 per wallet) + 2,700 at 0.002 BNB</td></tr>
+        </table>
+      </div>
+      <div class="leaf r">
+        <table style="margin-top:52px">
+          <tr><th>WINDOW</th><td>17 Nov 2026, 00:30 WIB → 24 Nov 2026, 00:30 WIB</td></tr>
+          <tr><th>AT THE END</th><td>Anyone can call finalize() — every unsold FABL still in the contract is burned</td></tr>
+          <tr><th>CONTRACT</th><td class="addr">0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2 · verified on Sourcify (exact match)</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="spread" id="agen">
+      <div class="leaf l">
+        <h2>A note to the reader's companion</h2>
+        <p class="txt">Travelling with an agent? Hand it this letter. It carries everything needed to read the tale on-chain and to act only as you direct — including the standing instruction to ask before anything is ever posted in your name.</p>
+      </div>
+      <div class="leaf r">
+        <div class="letter">
+          <pre id="agentPrompt">You are helping me join the FABLE (FABL) share sale on BNB Smart Chain (chainId 56).
 
 Contract: 0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2 — check it on BscScan and Sourcify before sending anything.
 
-The story so far: 3,000 shares of 1,000,000 FABL each. 300 shares are free, one per wallet, via claimFree(). 2,700 shares cost 0.002 BNB each via buy(n) with exactly n × 0.002 BNB. Every payment is forwarded to the project treasury in the same transaction. There is no owner and no admin key. The window runs 17 Nov 2026 00:30 WIB to 24 Nov 2026 00:30 WIB; after it ends, anyone can call finalize() to burn whatever is left unsold.
+The story so far: 3,000 shares of 1,000,000 FABL each. 300 shares are free, one per wallet, via claimFree(). 2,700 shares cost 0.002 BNB each via buy(n) with exactly n × 0.002 BNB. There is no owner and no admin key. The window runs 17 Nov 2026 00:30 WIB to 24 Nov 2026 00:30 WIB; after it ends, anyone can call finalize() to burn whatever is left unsold.
 
 Procedure: 1) read freeSold() and paidSold(); 2) if I have not claimed and free shares remain, call claimFree(); 3) if I ask to buy, call buy(n) with the exact value; 4) report my FABL balance and the transaction hash.
 
 When we are done, offer me a ready-made post for X and ask my approval before posting anything.</pre>
-    <button class="btn" id="copyPromptBtn" type="button">Copy the note</button>
-  </div>
-</section>
+          <button class="btn" id="copyPromptBtn" type="button">Copy the note</button>
+        </div>
+      </div>
+    </section>
 
-<section class="block wrap">
-  <h2>Questions from the fireside</h2>
-  <div class="qa"><h4>Is the free share really free?</h4><p>Yes — claimFree() costs only network gas. One per wallet, 300 in total, and the contract enforces both limits itself.</p></div>
-  <div class="qa"><h4>Where does the money go?</h4><p>100% of every buy() payment is forwarded to the treasury inside the same transaction. The contract keeps nothing and has no withdrawal function.</p></div>
-  <div class="qa"><h4>What happens to unsold shares?</h4><p>They are burned. After 24 Nov 00:30 WIB anyone can call finalize(), which destroys every FABL still held by the contract.</p></div>
-  <div class="qa"><h4>Can the story be rewritten?</h4><p>No. The price, caps, window and treasury are constants in a verified, immutable contract. There is no owner who could change a single word.</p></div>
-</section>
+    <section class="spread" id="perapian">
+      <div class="leaf l">
+        <h2>Questions from the fireside</h2>
+        <div class="qa"><h4>Is the free share really free?</h4><p>Yes — claimFree() costs only network gas. One per wallet, 300 in total, and the contract enforces both limits itself.</p></div>
+        <div class="qa"><h4>What does one share hold?</h4><p>Exactly 1,000,000 FABL — one slice of a supply that can never grow: 3,000,000,000 FABL, written once into a verified contract.</p></div>
+      </div>
+      <div class="leaf r">
+        <div class="qa" style="margin-top:52px"><h4>What happens to unsold shares?</h4><p>They are burned. After 24 Nov 00:30 WIB anyone can call finalize(), which destroys every FABL still held by the contract.</p></div>
+        <div class="qa"><h4>Can the story be rewritten?</h4><p>No. The price, the caps and the window are constants in a verified, immutable contract. There is no owner who could change a single word.</p></div>
+      </div>
+    </section>
 
-<footer>
-  <div class="wrap">
-    <p class="fin">— Fin —</p>
-    <p>FABLE (FABL) · Contract <span class="addr">0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2</span> · <a href="https://bscscan.com/address/0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2" target="_blank" rel="noopener">BscScan</a> · <a href="https://sourcify.dev/#/lookup/0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2" target="_blank" rel="noopener">Sourcify</a></p>
-    <p style="margin-top:7px">A storybook on BNB Smart Chain. Nothing here is financial advice — it is a fable, and every fable has a moral: verify before you trust.</p>
-  </div>
-</footer>
+    <footer>
+      <p class="fin">— Fin —</p>
+      <p>FABLE (FABL) · Contract <span class="addr">0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2</span> · <a href="https://bscscan.com/address/0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2" target="_blank" rel="noopener">BscScan</a> · <a href="https://sourcify.dev/#/lookup/0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2" target="_blank" rel="noopener">Sourcify</a></p>
+      <p style="margin-top:7px">A storybook on BNB Smart Chain. Nothing here is financial advice — it is a fable, and every fable has a moral: verify before you trust.</p>
+    </footer>
+
+  </main>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
 <script>
 (function(){
@@ -314,7 +439,7 @@ When we are done, offer me a ready-made post for X and ask my approval before po
     var cb = $("claimBtn"), bb = $("buyBtn");
     if (!CONTRACT){ return; }
     if (phase === "before"){ cb.disabled = true; bb.disabled = true;
-      cb.textContent = "Claim opens Nov 16, 19:00 WIB"; bb.textContent = "Sale opens Nov 16, 19:00 WIB"; return; }
+      cb.textContent = "Claim opens Nov 17, 00:30 WIB"; bb.textContent = "Sale opens Nov 17, 00:30 WIB"; return; }
     if (phase === "after"){ cb.disabled = true; bb.disabled = true;
       cb.textContent = "Free claims closed"; bb.textContent = "Sale closed"; return; }
     cb.disabled = f >= FREE_CAP; cb.textContent = f >= FREE_CAP ? "Free shares gone" : "Claim my free share";
@@ -396,7 +521,7 @@ When we are done, offer me a ready-made post for X and ask my approval before po
   });
   $("buyQty").addEventListener("input", function(){
     var n = parseInt($("buyQty").value, 10) || 0;
-    $("buyTotal").textContent = "= " + (n * 0.002).toFixed(3).replace(/0+$/, "").replace(/\.$/, ".0") + " BNB";
+    $("buyTotal").textContent = "= " + (n * 0.002).toFixed(4).replace(/0+$/, "").replace(/\.$/, ".0") + " BNB";
   });
 
   var cpBtn = $("copyPromptBtn");
@@ -418,7 +543,6 @@ When we are done, offer me a ready-made post for X and ask my approval before po
   if (CONTRACT){ refreshStats(); setInterval(refreshStats, 30000); updateButtons(0, 0); }
 })();
 </script>
-</body>
 <script>
 (function(){
   "use strict";
@@ -434,6 +558,28 @@ When we are done, offer me a ready-made post for X and ask my approval before po
     setTimeout(tick, 1000);
   }
   tick();
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  var layers = [
+    { el: document.querySelector(".sil-far"),  f: 10 },
+    { el: document.querySelector(".sil-mid"),  f: 22 },
+    { el: document.querySelector(".sil-near"), f: 38 }
+  ];
+  var ticking = false;
+  function upd(){
+    var y = window.scrollY || 0;
+    for (var i = 0; i < layers.length; i++){
+      if (layers[i].el) layers[i].el.style.transform = "translateY(" + Math.min(y * layers[i].f / 100, 56) + "px)";
+    }
+    ticking = false;
+  }
+  window.addEventListener("scroll", function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(upd); }
+  }, { passive: true });
+  upd();
 })();
 </script>
 </body>
