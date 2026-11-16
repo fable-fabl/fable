@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FABLE (FABL) — A Tale of Three Thousand Shares · BSC</title>
+<meta name="description" content="FABLE is a fixed-supply share sale on BNB Smart Chain, told as a storybook. 3,000 shares of 1,000,000 FABL: 300 free (1 per wallet), 2,700 at 0.002 BNB. 100% of proceeds go to the treasury. Unsold supply is burned at the end.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='14' y='8' width='72' height='84' rx='6' fill='%237a1f1f'/><rect x='24' y='18' width='52' height='64' rx='3' fill='none' stroke='%23e9c46a' stroke-width='4'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --page:#faf3e1; --page2:#f3e7c8; --ink:#2b2118; --mut:#8a7358;
+    --red:#7a1f1f; --red2:#9c2b2b; --gold:#c99700; --gold2:#e9c46a; --green:#3f6212;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--page2);color:var(--ink);font-family:Georgia,"Times New Roman",serif;
+    background-image:radial-gradient(#7a1f1f10 1px,transparent 1.4px);background-size:22px 22px}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+  .sheet{background:var(--page);border-left:2px solid #7a1f1f2b;border-right:2px solid #7a1f1f2b;
+    box-shadow:0 0 44px #2b211822;min-height:100vh}
+  header{border-bottom:1px solid var(--ink)}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:15px 0;gap:12px;flex-wrap:wrap}
+  .brand{font-family:"Playfair Display",serif;font-weight:900;letter-spacing:.28em;font-size:17px}
+  .brand i{color:var(--red);font-style:normal}
+  nav{display:flex;gap:20px;font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+  nav a{color:var(--ink);text-decoration:none}
+  nav a:hover{color:var(--red);text-decoration:underline}
+  .edition{font-family:"IBM Plex Mono",monospace;font-size:11.5px;border:1.5px solid var(--ink);padding:5px 9px}
+  /* cover */
+  .cover{text-align:center;padding:46px 16px 8px}
+  .cover .frame{border:3px double var(--red);outline:1.5px solid var(--gold);outline-offset:6px;
+    padding:38px 22px 30px;background:linear-gradient(#fffaf0,#faf3e1)}
+  .cover .over{font-family:"IBM Plex Mono",monospace;letter-spacing:.34em;font-size:12px;color:var(--mut)}
+  .cover h1{font-family:"Playfair Display",serif;font-weight:900;font-size:clamp(60px,12vw,116px);line-height:1.02;color:var(--red);margin:12px 0 4px}
+  .cover .subtitle{font-family:"Playfair Display",serif;font-style:italic;font-weight:600;font-size:clamp(19px,3vw,25px)}
+  .cover .rule{display:flex;align-items:center;gap:12px;max-width:420px;margin:20px auto}
+  .cover .rule::before,.cover .rule::after{content:"";flex:1;border-top:1.5px solid var(--gold)}
+  .cover .rule span{color:var(--red);font-size:19px}
+  .cover .lede{max-width:560px;margin:0 auto;font-size:17.5px;line-height:1.65}
+  .cover .lede b{color:var(--red)}
+  .cover .lede::first-letter{font-family:"Playfair Display",serif;font-size:52px;font-weight:900;color:var(--red);
+    float:left;line-height:.82;padding:5px 10px 0 0}
+  .cdrow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .cd{border:1.5px solid var(--ink);background:#fffaf0;padding:8px 14px;font-family:"IBM Plex Mono",monospace;text-align:left}
+  .cd .k{font-size:10.5px;letter-spacing:.15em;color:var(--mut)}
+  .cd .v{font-size:19px;font-weight:600}
+  /* bookmark progress */
+  .progress{padding:30px 0 4px}
+  .progress-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+  .progress-head h2{font-family:"Playfair Display",serif;font-size:27px;font-weight:900}
+  .ribbon-track{position:relative;height:26px;border:2px solid var(--ink);background:#fffaf0;margin-top:13px}
+  .ribbon-track i{position:absolute;top:0;bottom:0;left:0;width:0%;background:var(--red);transition:width 1s ease}
+  .ribbon-track i::after{content:"";position:absolute;right:-13px;top:0;border-style:solid;border-width:13px 13px 13px 0;border-color:transparent var(--red) transparent transparent;transform:rotate(180deg)}
+  .scale{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--mut);margin-top:6px}
+  /* chapters */
+  .chapters{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px 0 4px}
+  @media(max-width:720px){.chapters{grid-template-columns:1fr}}
+  .chapter{border:2px solid var(--ink);background:#fffaf0;padding:22px}
+  .chapter .chno{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.22em;color:var(--red)}
+  .chapter h3{font-family:"Playfair Display",serif;font-size:25px;font-weight:900;margin:6px 0 4px}
+  .chapter p{color:var(--mut);line-height:1.6;font-size:15.5px}
+  .meter{height:13px;border:2px solid var(--ink);background:#fff;margin:15px 0 7px;overflow:hidden}
+  .meter i{display:block;height:100%;width:0%;transition:width 1s ease}
+  .meter .f{background:var(--green)} .meter .p{background:var(--gold)}
+  .meter-row{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+  .qtyrow{display:flex;align-items:center;gap:12px;margin:13px 0 2px}
+  .qtyrow input{width:88px;font-family:"IBM Plex Mono",monospace;font-size:16px;padding:8px;border:2px solid var(--ink);background:#fff}
+  .qtyrow .tot{font-family:"IBM Plex Mono",monospace;font-weight:600}
+  .btn{display:inline-block;width:100%;margin-top:13px;padding:14px;font-family:"Playfair Display",serif;font-weight:900;font-size:18px;
+    border:2.5px solid var(--ink);cursor:pointer;background:var(--red);color:#fffaf0;transition:transform .08s}
+  .btn:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.freeb{background:var(--green)} .btn.paidb{background:var(--gold);color:var(--ink)}
+  .status{font-family:"IBM Plex Mono",monospace;font-size:13px;padding:4px 0 22px;color:var(--mut)}
+  /* share */
+  .share{border:2.5px dashed var(--red);background:#fdf6da;padding:20px;margin:4px 0 26px}
+  .share .tag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;background:var(--gold2);border:2px solid var(--ink);padding:4px 9px;margin-bottom:11px}
+  .sharetext{white-space:pre-wrap;font-size:16px;line-height:1.6;border:1.5px solid var(--ink);background:#fffaf0;padding:13px}
+  .share .row{display:flex;gap:12px;margin-top:13px;flex-wrap:wrap}
+  .share .row .btn{width:auto;padding:11px 20px;margin-top:0}
+  .btn.ghost{background:#fffaf0;color:var(--ink)}
+  /* contents + colophon */
+  section.block{padding:20px 0 6px}
+  section.block h2{font-family:"Playfair Display",serif;font-size:27px;font-weight:900;margin-bottom:14px}
+  .toc{list-style:none}
+  .toc li{display:flex;gap:14px;border:2px solid var(--ink);background:#fffaf0;padding:15px 17px;margin-bottom:11px}
+  .toc .n{font-family:"Playfair Display",serif;font-weight:900;font-size:22px;color:var(--red);min-width:38px}
+  .toc h4{font-family:"Playfair Display",serif;font-size:18.5px;font-weight:900}
+  .toc p{color:var(--mut);line-height:1.55;font-size:15px}
+  table{width:100%;border-collapse:collapse;background:#fffaf0;border:2px solid var(--ink)}
+  th,td{border-bottom:1px solid #2b21182b;padding:10px 13px;text-align:left;font-size:15px}
+  th{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;color:var(--mut);width:32%}
+  tr:last-child th,tr:last-child td{border-bottom:none}
+  td{font-weight:600}
+  .addr{word-break:break-all}
+  /* letter */
+  .letter{border:2px solid var(--ink);background:#fffaf0;padding:20px}
+  .letter pre{white-space:pre-wrap;font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.65}
+  .letter .btn{width:auto;padding:11px 20px}
+  /* fireside */
+  .qa{border:2px solid var(--ink);background:#fffaf0;padding:15px 17px;margin-bottom:11px}
+  .qa h4{font-family:"Playfair Display",serif;font-size:18px;font-weight:900;margin-bottom:3px}
+  .qa p{color:var(--mut);line-height:1.6;font-size:15px}
+  footer{border-top:1px solid var(--ink);padding:20px 0 30px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--mut);text-align:center}
+  footer a{color:var(--red)}
+  .fin{font-family:"Playfair Display",serif;font-style:italic;font-size:19px;color:var(--red);margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header>
+  <div class="wrap topbar">
+    <div class="brand">F<i>A</i>BLE</div>
+    <nav>
+      <a href="#chapters">Chapters</a><a href="#contents">Contents</a><a href="#colophon">Colophon</a><a href="#agents">For Agents</a>
+    </nav>
+    <span class="edition">FIRST EDITION · BSC</span>
+  </div>
+</header>
+
+<section class="cover">
+  <div class="wrap">
+    <div class="frame">
+      <p class="over">A FIXED-SUPPLY SHARE SALE · BNB SMART CHAIN</p>
+      <h1>FABLE</h1>
+      <p class="subtitle">A tale of three thousand shares</p>
+      <div class="rule"><span>❦</span></div>
+      <p class="lede">Once upon a chain, there was a token with exactly three billion coins and not one more. Its story is sold by the share — 3,000 shares of 1,000,000 FABL — and like every good story, it gives something away in chapter one: <b>300 shares are free</b>, one per reader. Every coin paid along the way travels straight to the treasury, in the very same transaction.</p>
+      <div class="cdrow">
+        <div class="cd"><div class="k">THE STORY OPENS IN</div><div class="v" id="cdStart">--:--:--</div></div>
+        <div class="cd"><div class="k">THE BOOK CLOSES</div><div class="v">24 NOV · 00:30 WIB</div></div>
+        <div class="cd"><div class="k">PROCEEDS TO TREASURY</div><div class="v">100%</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="progress wrap">
+  <div class="progress-head">
+    <h2>Pages turned</h2>
+    <p class="mono"><span id="totalTakenLbl">0</span> shares taken · <span id="totalLeftLbl">3,000 left</span></p>
+  </div>
+  <div class="ribbon-track"><i id="totalBar"></i></div>
+  <div class="scale"><span>PAGE ONE</span><span>THE BOOKMARK MOVES AS SHARES SELL</span><span>THE END</span></div>
+</section>
+
+<section class="chapters wrap" id="chapters">
+  <div class="chapter">
+    <p class="chno">CHAPTER ONE — THE GIFT</p>
+    <h3>The free share</h3>
+    <p>The opening gift: one share for every reader's wallet, free. Three hundred gifts in all — when they are given, the chapter closes.</p>
+    <div class="meter"><i class="f" id="freeMeter"></i></div>
+    <div class="meter-row"><span><span id="freeSold">0</span> / 300 claimed</span><span><span id="freeLeft">300</span> left</span></div>
+    <button class="btn freeb" id="claimBtn" type="button" disabled>Claim opens at launch</button>
+  </div>
+  <div class="chapter">
+    <p class="chno">CHAPTER TWO — THE PRICE</p>
+    <h3>Buy shares</h3>
+    <p>The rest of the tale is sold at a fair and fixed price: 2,700 shares at 0.002 BNB each, as many as you wish to own. The full amount reaches the treasury in the same transaction.</p>
+    <div class="meter"><i class="p" id="paidMeter"></i></div>
+    <div class="meter-row"><span><span id="paidSold">0</span> / 2,700 sold</span><span><span id="paidLeft">2,700</span> left</span></div>
+    <div class="qtyrow">
+      <input id="buyQty" type="number" min="1" step="1" value="1" aria-label="Number of shares">
+      <span class="tot" id="buyTotal">= 0.002 BNB</span>
+    </div>
+    <button class="btn paidb" id="buyBtn" type="button" disabled>Sale opens at launch</button>
+  </div>
+</section>
+<div class="wrap"><p class="status" id="walletStatus">Wallet not connected yet — claiming and buying connect it for you.</p></div>
+
+<div class="wrap">
+  <section class="share" id="shareBox" hidden>
+    <span class="tag">YOUR PAGE IS MARKED 🎉</span>
+    <p style="margin-bottom:11px">Your share is written into the chain. If you would like to tell the tale further, here is a ready-made post — nothing goes out without your tap.</p>
+    <div class="sharetext" id="shareText"></div>
+    <div class="row">
+      <a class="btn" id="shareBtn" href="#" target="_blank" rel="noopener" style="background:#1d6fb8">Post it on X →</a>
+      <button class="btn ghost" id="shareClose" type="button">No thanks</button>
+    </div>
+  </section>
+</div>
+
+<section class="block wrap" id="contents">
+  <h2>Contents</h2>
+  <ul class="toc">
+    <li><span class="n">I.</span><div><h4>Open the book</h4><p>Connect any BNB Smart Chain wallet. Claiming or buying connects it for you — no sign-up, no account, no library card.</p></div></li>
+    <li><span class="n">II.</span><div><h4>Accept the gift</h4><p>Take your one free share while the 300 last. Then buy more at 0.002 BNB a share if the story has you hooked.</p></div></li>
+    <li><span class="n">III.</span><div><h4>Read the ending</h4><p>When the book closes on 24 Nov, a public finalize() call burns every unsold FABL. What was taken is all that will ever exist.</p></div></li>
+  </ul>
+</section>
+
+<section class="block wrap" id="colophon">
+  <h2>Colophon</h2>
+  <table>
+    <tr><th>TITLE</th><td>Fable (FABL) — one immutable contract, no owner, no admin keys</td></tr>
+    <tr><th>TOTAL SUPPLY</th><td>3,000,000,000 FABL</td></tr>
+    <tr><th>ONE SHARE</th><td>1,000,000 FABL</td></tr>
+    <tr><th>DISTRIBUTION</th><td>3,000 shares — 300 free (1 per wallet) + 2,700 at 0.002 BNB</td></tr>
+    <tr><th>PROCEEDS</th><td>100% forwarded to the treasury in the same transaction</td></tr>
+    <tr><th>WINDOW</th><td>17 Nov 2026, 00:30 WIB → 24 Nov 2026, 00:30 WIB</td></tr>
+    <tr><th>AT THE END</th><td>Anyone can call finalize() — every unsold FABL still in the contract is burned</td></tr>
+    <tr><th>CONTRACT</th><td class="addr">0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2 · verified on Sourcify (exact match)</td></tr>
+  </table>
+</section>
+
+<section class="block wrap" id="agents">
+  <h2>A note to the reader's companion (agents)</h2>
+  <div class="letter">
+    <pre id="agentPrompt">You are helping me join the FABLE (FABL) share sale on BNB Smart Chain (chainId 56).
+
+Contract: 0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2 — check it on BscScan and Sourcify before sending anything.
+
+The story so far: 3,000 shares of 1,000,000 FABL each. 300 shares are free, one per wallet, via claimFree(). 2,700 shares cost 0.002 BNB each via buy(n) with exactly n × 0.002 BNB. Every payment is forwarded to the project treasury in the same transaction. There is no owner and no admin key. The window runs 17 Nov 2026 00:30 WIB to 24 Nov 2026 00:30 WIB; after it ends, anyone can call finalize() to burn whatever is left unsold.
+
+Procedure: 1) read freeSold() and paidSold(); 2) if I have not claimed and free shares remain, call claimFree(); 3) if I ask to buy, call buy(n) with the exact value; 4) report my FABL balance and the transaction hash.
+
+When we are done, offer me a ready-made post for X and ask my approval before posting anything.</pre>
+    <button class="btn" id="copyPromptBtn" type="button">Copy the note</button>
+  </div>
+</section>
+
+<section class="block wrap">
+  <h2>Questions from the fireside</h2>
+  <div class="qa"><h4>Is the free share really free?</h4><p>Yes — claimFree() costs only network gas. One per wallet, 300 in total, and the contract enforces both limits itself.</p></div>
+  <div class="qa"><h4>Where does the money go?</h4><p>100% of every buy() payment is forwarded to the treasury inside the same transaction. The contract keeps nothing and has no withdrawal function.</p></div>
+  <div class="qa"><h4>What happens to unsold shares?</h4><p>They are burned. After 24 Nov 00:30 WIB anyone can call finalize(), which destroys every FABL still held by the contract.</p></div>
+  <div class="qa"><h4>Can the story be rewritten?</h4><p>No. The price, caps, window and treasury are constants in a verified, immutable contract. There is no owner who could change a single word.</p></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="fin">— Fin —</p>
+    <p>FABLE (FABL) · Contract <span class="addr">0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2</span> · <a href="https://bscscan.com/address/0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2" target="_blank" rel="noopener">BscScan</a> · <a href="https://sourcify.dev/#/lookup/0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2" target="_blank" rel="noopener">Sourcify</a></p>
+    <p style="margin-top:7px">A storybook on BNB Smart Chain. Nothing here is financial advice — it is a fable, and every fable has a moral: verify before you trust.</p>
+  </div>
+</footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  // Filled from deploy/info.json when the contract is published; empty = pre-launch mode.
+  var CONTRACT = "0x182bcB5c1E1611db8c83eDe75C7E518eACEad2A2";
+  var SITE_URL = "https://fable-fabl.github.io/fable/";
+  var START = 1794850200, END = 1795455000; // 2026-11-17 00:30 WIB -> 2026-11-24 00:30 WIB
+  var PRICE_WEI = "2000000000000000"; // 0.002 BNB
+  var FREE_CAP = 300, PAID_CAP = 2700;
+  var SHARE_TEXT = "Every good story gives something away in chapter one 📖\n\n" +
+    "Mine: a free share of FABLE on BSC — 1 share = 1,000,000 $FABL, and 300 shares were free, one per wallet.\n\n" +
+    "The book is still open 👇\n" + SITE_URL;
+  var ABI = [
+    "function claimFree()",
+    "function buy(uint256 n) payable",
+    "function freeSold() view returns (uint256)",
+    "function paidSold() view returns (uint256)",
+    "function freeClaimed(address) view returns (bool)"
+  ];
+  var RPCS = ["https://bsc-dataseed.binance.org", "https://bsc.publicnode.com",
+              "https://bsc-mainnet.nodereal.io/v1/64a9df0874fb4a93b9d0a3849de012d3"];
+  var signerContract = null, userAddr = null;
+
+  function $(id){ return document.getElementById(id); }
+  function fmt(n){ return Number(n).toLocaleString("en-US"); }
+  function setStatus(t){ var s = $("walletStatus"); if(s) s.textContent = t; }
+
+  function showShare(){
+    $("shareText").textContent = SHARE_TEXT;
+    $("shareBtn").href = "https://x.com/intent/post?text=" + encodeURIComponent(SHARE_TEXT);
+    var box = $("shareBox");
+    box.hidden = false;
+    box.scrollIntoView({behavior:"smooth", block:"center"});
+  }
+  $("shareClose").addEventListener("click", function(){ $("shareBox").hidden = true; });
+
+  async function readContract(){
+    for (var i = 0; i < RPCS.length; i++){
+      try {
+        var p = new ethers.JsonRpcProvider(RPCS[i], 56);
+        return new ethers.Contract(CONTRACT, ABI, p);
+      } catch(e){ /* try next */ }
+    }
+    return null;
+  }
+
+  async function refreshStats(){
+    if (!CONTRACT || typeof ethers === "undefined") return;
+    try {
+      var ro = await readContract(); if (!ro) return;
+      var f = Number(await ro.freeSold()), p = Number(await ro.paidSold());
+      $("freeSold").textContent = fmt(f); $("freeLeft").textContent = fmt(FREE_CAP - f);
+      $("paidSold").textContent = fmt(p); $("paidLeft").textContent = fmt(PAID_CAP - p);
+      $("freeMeter").style.width = (f / FREE_CAP * 100) + "%";
+      $("paidMeter").style.width = (p / PAID_CAP * 100) + "%";
+      var tb = $("totalBar"), taken = f + p, cap = FREE_CAP + PAID_CAP;
+      if (tb) tb.style.width = ((cap - taken) / cap * 100) + "%";
+      $("totalTakenLbl").textContent = fmt(taken);
+      $("totalLeftLbl").textContent = fmt(cap - taken) + " left";
+      updateButtons(f, p);
+    } catch(e){ /* keep last shown values */ }
+  }
+
+  function salePhase(){
+    var now = Math.floor(Date.now() / 1000);
+    if (now < START) return "before";
+    if (now > END) return "after";
+    return "live";
+  }
+
+  function updateButtons(f, p){
+    var phase = salePhase();
+    var cb = $("claimBtn"), bb = $("buyBtn");
+    if (!CONTRACT){ return; }
+    if (phase === "before"){ cb.disabled = true; bb.disabled = true;
+      cb.textContent = "Claim opens Nov 16, 19:00 WIB"; bb.textContent = "Sale opens Nov 16, 19:00 WIB"; return; }
+    if (phase === "after"){ cb.disabled = true; bb.disabled = true;
+      cb.textContent = "Free claims closed"; bb.textContent = "Sale closed"; return; }
+    cb.disabled = f >= FREE_CAP; cb.textContent = f >= FREE_CAP ? "Free shares gone" : "Claim my free share";
+    bb.disabled = p >= PAID_CAP; bb.textContent = p >= PAID_CAP ? "Sold out" : "Buy shares";
+  }
+
+  function loadScript(u){
+    return new Promise(function(res, rej){
+      var s = document.createElement("script");
+      s.src = u; s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+  }
+  async function loadWC(){
+    if (window["@walletconnect/ethereum-provider"]) return;
+    var urls = ["https://unpkg.com/@walletconnect/ethereum-provider@2.21.0/dist/index.umd.js",
+                "https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.0/dist/index.umd.js"];
+    for (var i = 0; i < urls.length; i++){
+      try { await loadScript(urls[i]); if (window["@walletconnect/ethereum-provider"]) return; } catch(e){ /* fallback */ }
+    }
+    throw new Error("WalletConnect failed to load");
+  }
+
+  async function connectWallet(){
+    if (signerContract) return signerContract;
+    var eip1193 = null;
+    if (window.ethereum){ eip1193 = window.ethereum; }
+    else {
+      await loadWC();
+      var wc = await window["@walletconnect/ethereum-provider"].EthereumProvider.init({
+        projectId: "ff5985647ed78916bed0155d2ff84a1c",
+        chains: [56],
+        showQrModal: true,
+        rpcMap: { 56: RPCS[0] },
+        metadata: { name: "Fable (FABL)", description: "Fable share sale on BNB Smart Chain",
+                    url: SITE_URL, icons: [] }
+      });
+      await wc.connect();
+      eip1193 = wc;
+    }
+    var bp = new ethers.BrowserProvider(eip1193);
+    var net = await bp.getNetwork();
+    if (Number(net.chainId) !== 56){
+      try { await eip1193.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x38" }] }); } catch(e){ /* user may switch manually */ }
+      bp = new ethers.BrowserProvider(eip1193);
+    }
+    var signer = await bp.getSigner();
+    userAddr = await signer.getAddress();
+    signerContract = new ethers.Contract(CONTRACT, ABI, signer);
+    setStatus("Wallet connected: " + userAddr.slice(0, 6) + "…" + userAddr.slice(-4));
+    return signerContract;
+  }
+
+  async function runTx(fn){
+    try {
+      setStatus("Waiting for your wallet…");
+      var c = await connectWallet();
+      var tx = await fn(c);
+      setStatus("Sent — waiting for the chain to confirm…");
+      await tx.wait();
+      setStatus("Confirmed on-chain. Your page is marked 📖");
+      await refreshStats();
+      showShare();
+      return true;
+    } catch(e){
+      setStatus("That did not go through: " + (e && e.shortMessage ? e.shortMessage : (e && e.message ? e.message.slice(0, 140) : "unknown error")));
+      return false;
+    }
+  }
+
+  $("claimBtn").addEventListener("click", function(){
+    runTx(function(c){ return c.claimFree(); });
+  });
+  $("buyBtn").addEventListener("click", function(){
+    var n = parseInt($("buyQty").value, 10);
+    if (!n || n < 1){ setStatus("Pick at least 1 share."); return; }
+    var value = (BigInt(PRICE_WEI) * BigInt(n)).toString();
+    runTx(function(c){ return c.buy(n, { value: value }); });
+  });
+  $("buyQty").addEventListener("input", function(){
+    var n = parseInt($("buyQty").value, 10) || 0;
+    $("buyTotal").textContent = "= " + (n * 0.002).toFixed(3).replace(/0+$/, "").replace(/\.$/, ".0") + " BNB";
+  });
+
+  var cpBtn = $("copyPromptBtn");
+  if (cpBtn){
+    cpBtn.addEventListener("click", function(){
+      var t = $("agentPrompt").innerText;
+      function done(){ cpBtn.textContent = "Copied ✓"; setTimeout(function(){ cpBtn.textContent = "Copy the prompt"; }, 2000); }
+      function fallback(){
+        var ta = document.createElement("textarea");
+        ta.value = t; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); done(); } catch(e){}
+        document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done).catch(fallback); }
+      else { fallback(); }
+    });
+  }
+
+  if (CONTRACT){ refreshStats(); setInterval(refreshStats, 30000); updateButtons(0, 0); }
+})();
+</script>
+</body>
+<script>
+(function(){
+  "use strict";
+  var START = 1794850200;
+  var cd = document.getElementById("cdStart");
+  function pad(n){ return (n<10?"0":"")+n; }
+  function tick(){
+    if(!cd) return;
+    var now = Math.floor(Date.now()/1000), d = START - now;
+    if(d <= 0){ cd.textContent = "THE STORY IS OPEN"; return; }
+    var h = Math.floor(d/3600), m = Math.floor(d%3600/60), s = d%60;
+    cd.textContent = pad(h)+":"+pad(m)+":"+pad(s);
+    setTimeout(tick, 1000);
+  }
+  tick();
+})();
+</script>
+</body>
+</html>
